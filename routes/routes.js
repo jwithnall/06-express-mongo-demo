@@ -2,17 +2,22 @@ const express = require("express");
 
 const router = express.Router();
 
-var ObjectId = require("mongodb").ObjectId; 
+var ObjectId = require("mongodb").ObjectId;
 
-module.exports = app => {
+module.exports = (app) => {
   // two routes for views
 
   router.get("/allfilms", (req, res) => {
     app
       .set("myDb")
       .collection("filmsCollection")
-      .find({})
-      .toArray(function(err, docs) {
+      //get all films cf. select *
+      //.find({})
+      //Get all films over £5 (note- stored as string)
+      //.find({filmPrice: {$gt:"5"}})
+      //Get all PG films with prices above £6
+      .find({ filmCertificate: "PG", filmPrice: { $gt: "6.00" } })
+      .toArray(function (err, docs) {
         if (err) {
           console.error(err);
         }
@@ -21,12 +26,15 @@ module.exports = app => {
   });
 
   router.get("/film/:filmID", (req, res) => {
-            let filmID = req.params.filmID;
-            var o_id = new ObjectId(filmID);
+    //Note that let is another way of defining variables. Introduced with ES6.
+    //Let has block-scope (only occurs within those curly braces)
+    //Var has function scope, works within whole function
+    let filmID = req.params.filmID;
+    var o_id = new ObjectId(filmID);
     app
       .set("myDb")
       .collection("filmsCollection")
-      .find({ "_id": o_id })
+      .find({ _id: o_id })
       .toArray(function (err, docs) {
         if (err) {
           console.error(err);
@@ -53,12 +61,29 @@ module.exports = app => {
   });
 
   router.get("/api/film/:filmID", (req, res) => {
-            let filmID = req.params.filmID;
-            var o_id = new ObjectId(filmID);
+    let filmID = req.params.filmID;
+    var o_id = new ObjectId(filmID);
     app
       .set("myDb")
       .collection("filmsCollection")
-      .find({"_id": o_id })
+      .find({ _id: o_id })
+      .toArray(function (err, docs) {
+        if (err) {
+          console.error(err);
+        }
+        res.json(docs);
+      });
+  });
+
+  //Can use router.post for post requests
+  //Can also use reouter.put & reouter.delete
+  router.post("/api/film/:filmID", (req, res) => {
+    let filmID = req.params.filmID;
+    var o_id = new ObjectId(filmID);
+    app
+      .set("myDb")
+      .collection("filmsCollection")
+      .find({ _id: o_id })
       .toArray(function (err, docs) {
         if (err) {
           console.error(err);

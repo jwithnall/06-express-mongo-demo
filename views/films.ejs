@@ -3,9 +3,10 @@
   <div class="flexContainer">
     <% films.forEach(function(film){ %>
     <div class="flexItem">
-      <h2><%= film.filmName %> (<%=film.filmCertificate %>)</h2>
+      <a href="/film/<%=film._id%>"><h2><%= film.filmName %> (<%=film.filmCertificate %>)</h2></a>
       <p><%= film.filmDescription %></p>
       <p><%= film.releaseDate %></p>
+      <p>&pound;<%= film.filmPrice %></p>
     </div>
     <% }) %>
   </div>

@@ -1,7 +1,9 @@
 <%- include('head') %>
 <div class="container">
-    <h1><%= film.filmName   %></h1>
+    <h1><%= film.filmName   %> <img src="/images/certifications/<%=film.filmCertificate%>.gif" alt="<%=film.filmCertificate%>"</h1>
+    <h2>&pound;<%=film.filmPrice%></h2>
     <p><%= film.filmDescription  %></p>
-    <div><img src="/images/<%= film.filmImage %>" alt=""></div>
-</div>
+    <div><p>Review Score: <%=film.filmReview%> /5</p></div>
+    <div><img src="/images/<%= film.filmImage %>" alt="<%=film.filmName%> Poster"></div>
+    </div>
 <%- include('footer'); %>
